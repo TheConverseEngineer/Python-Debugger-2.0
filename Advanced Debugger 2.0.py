@@ -101,12 +101,14 @@ class Debug:    #The debug class
         print('Exiting', self.co+self.FuncName)
         print('\nHere is the final variable report:')
         for i in self.Vars.keys():
+            print(self.VarHistory[i])
             print(str(i) + ': (Created on', str(self.CreLine[i]) + ') complete value list:')
             for j in self.VarHistory[i]:
                 print("\t on line", str(j[0]) + ",", i, "became", j[1])
-        print(self.LineRunNo)
-        print(self.Vars)
-        print(self.VarHistory)
+            if all(type(j) is int for j in [b for a in self.VarHistory[i] for b in a if a.index(b) == 1]): #if all the values are integers
+                print("Variable", str(i), "has a range of", str(max([b for a in self.VarHistory[i] for b in a if a.index(b) == 1]) - min(b for a in self.VarHistory[i] for b in a if a.index(b) == 1)) + ", starting at", str(max([b for a in self.VarHistory[i] for b in a if a.index(b) == 1])),  "and ending at", str(min([b for a in self.VarHistory[i] for b in a if a.index(b) == 1])))
+            else:
+                print("The complete set of values for", str(i), "is", str([b for a in self.VarHistory[i] for b in a if a.index(b) == 1]))
         print('\n')
 
     #keep track of how many times each line was executed
